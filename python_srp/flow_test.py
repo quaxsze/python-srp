@@ -24,13 +24,13 @@ if __name__ == '__main__':
     print(f'Server B: {B}')
 
     print('Server->B->CLient')
-    print('Server: computes premaster secret and session key')
-    serv.compute_premaster_secret(I, salt, verifier, A)
-    serv.compute_session_key(I, salt, A)
-
     print('Client: computes premaster secret and session key')
     client.compute_premaster_secret(salt, B)
     M = client.compute_session_key(salt, B)
+
+    print('Server: computes premaster secret and session key')
+    serv.compute_premaster_secret(I, salt, verifier, A)
+    serv.compute_session_key(I, salt, A)
 
     print(f'Client evidence message: {M}')
     print(f'Server evidence message: {serv.M}')

@@ -18,7 +18,7 @@ class Client:
 		self.a = 0
 		self.A = 0
 		self.M = b''
-		self.hashed_M = b''
+		self.hashed_AMK = b''
 		self.session_key = b''
 		self.auth = False
 	
@@ -88,13 +88,13 @@ class Client:
 		'''
 		self.session_key = compute_hash(self.premaster_secret)
 		self.M = compute_M(self.g, self.N, self.username, salt, self.A, server_B, self.session_key)
-		self.hashed_M = compute_hash(self.A, self.M, self.session_key)
+		self.hashed_AMK = compute_hash(self.A, self.M, self.session_key)
 		return self.M
 	
-	def verify_session(self, server_hashed_M):
-		if self.hashed_M == server_hashed_M:
+	def verify_session(self, server_hashed_AMK):
+		if self.hashed_AMK == server_hashed_AMK:
 			self.auth = True
-		return self.hashed_M
+		return self.hashed_AMK
 
 	@property
 	def authenticated(self):
@@ -109,7 +109,7 @@ class Server:
 		self.b = 0
 		self.B = 0
 		self.M = b''
-		self.hashed_M = b''
+		self.hashed_AMK = b''
 		self.session_key = b''
 		self.auth = False
 
@@ -150,13 +150,13 @@ class Server:
 		'''
 		self.session_key = compute_hash(self.premaster_secret)
 		self.M = compute_M(self.g, self.N, username, salt, client_A, self.B, self.session_key)
-		self.hashed_M = compute_hash(client_A, self.M, self.session_key)
+		self.hashed_AMK = compute_hash(client_A, self.M, self.session_key)
 		return self.M
 	
 	def verify_session(self, client_M):
 		if self.M == client_M:
 			self.auth = True
-		return self.hashed_M
+		return self.hashed_AMK
 
 	@property
 	def authenticated(self):
