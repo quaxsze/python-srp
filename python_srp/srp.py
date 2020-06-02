@@ -92,10 +92,9 @@ class Client:
 		return self.M
 	
 	def verify_session(self, server_hashed_M):
-		vs = (self.hashed_M == server_hashed_M)
-		if (vs):
+		if self.hashed_M == server_hashed_M:
 			self.auth = True
-		return self.hashed_M if vs else None
+		return self.hashed_M
 
 	@property
 	def authenticated(self):
@@ -155,10 +154,9 @@ class Server:
 		return self.M
 	
 	def verify_session(self, client_M):
-		vs = (self.M == client_M)
-		if (vs):
+		if self.M == client_M:
 			self.auth = True
-		return self.hashed_M if vs else None
+		return self.hashed_M
 
 	@property
 	def authenticated(self):
